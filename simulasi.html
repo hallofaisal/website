@@ -1,0 +1,486 @@
+<html>
+<head>
+    <title>Simulasi Monte Carlo</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+        .header {
+            background-color: #fff;
+            color: #000;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #ddd;
+            border-radius: 0 0 10px 10px;
+        }
+        .header span {
+            font-weight: bold;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+        .navbar {
+            background-color: #fff;
+            padding: 10px;
+            text-align: right;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border-radius: 10px;
+        }
+        .navbar a {
+            margin: 0 15px;
+            color: #000;
+            text-decoration: none;
+            font-weight: normal;
+        }
+        .title {
+            text-align: center;
+            margin: 20px 0;
+            font-size: 36px;
+            font-weight: bold;
+        }
+        .table-container {
+            width: 80%;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .table-container-second {
+            width: 80%;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .table-container-result {
+            width: 80%;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: center;
+        }
+        th {
+            background-color: #333;
+            color: #fff;
+        }
+        .footer {
+            text-align: center;
+            margin: 20px 0;
+            font-size: 18px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-group select, .form-group input {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .form-group button {
+            padding: 10px 20px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+        .form-group button:hover {
+            background-color: #555;
+        }
+        .result-group {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+        .result-group div {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-right: 10px;
+            text-align: center;
+        }
+        .result-group div:last-child {
+            margin-right: 0;
+        }
+        .chart-container {
+            width: 80%;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+        .edit-button, .delete-button {
+            padding: 5px 10px;
+            margin: 5px;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        .edit-button {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .delete-button {
+            background-color: #f44336;
+            color: white;
+        }
+        @media (max-width: 768px) {
+            .table-container, .table-container-second, .table-container-result, .chart-container {
+                width: 100%;
+                padding: 10px;
+            }
+            .title {
+                font-size: 24px;
+            }
+            .result-group {
+                flex-direction: column;
+            }
+            .result-group div {
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+            .result-group div:last-child {
+                margin-bottom: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <span>FAISAL RIZKY 301220037</span>
+        <div class="navbar">
+            <a href="http://localhost:5000/#" target="web.html">Beranda</a>
+            <a href="http://localhost:5000/tentang_covid" target="tentang_covid.html">Tentang Covid</a>
+            <a href="simulasi.html">Simulasi Monte Carlo</a>
+        </div>
+    </div>
+    <div class="title">SIMULASI MONTE CARLO</div>
+    <div class="table-container">
+        <div class="form-group">
+            <label for="tahun">Tahun:</label>
+            <select id="tahun">
+                <option value="2018">2018</option>
+                <option value="2019">2019</option>
+                <option value="2020">2020</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="indikator">Indikator Ekonomi:</label>
+            <select id="indikator">
+                <option value="nilai_tukar">Nilai Tukar Rupiah</option>
+                <option value="ihsg_sebelum">IHSG Sebelum Pandemi</option>
+                <option value="penurunan_ihsg">Penurunan IHSG</option>
+                <option value="tenaga_kerja">Tenaga Kerja yang Dirumahkan</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <button onclick="hitung()">Hitung</button>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Probabilitas</th>
+                    <th>Kumulatif</th>
+                    <th>Interval 1</th>
+                    <th>Interval 2</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td id="probabilitas"></td>
+                    <td id="kumulatif"></td>
+                    <td id="interval1"></td>
+                    <td id="interval2"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="table-container-second">
+        <div class="form-group">
+            <label for="a">a:</label>
+            <input type="number" id="a" value="">
+        </div>
+        <div class="form-group">
+            <label for="c">c:</label>
+            <input type="number" id="c" value="">
+        </div>
+        <div class="form-group">
+            <label for="m">m:</label>
+            <input type="number" id="m" value="">
+        </div>
+        <div class="form-group">
+            <label for="z0">Z0:</label>
+            <input type="number" id="z0" value="">
+        </div>
+        <div class="form-group">
+            <button onclick="hitungTigaDigit()">Hitung</button>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>(aZi-1 + C)</th>
+                    <th>(aZi-1 + C) mod m</th>
+                    <th>Angka tiga digit</th>
+                    <th>Prediksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td id="aZiC"></td>
+                    <td id="mod"></td>
+                    <td id="threeDigit"></td>
+                    <td id="prediksi"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="form-group" style="text-align: center;">
+        <button onclick="updateChart()">Hasil</button>
+    </div>
+    <div class="table-container-result">
+        <table>
+            <thead>
+                <tr>
+                    <th>Periode</th>
+                    <th>Hasil Simulasi</th>
+                    <th>Data Real</th>
+                    <th>Akurasi</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td id="periode"></td>
+                    <td id="hasilSimulasi"></td>
+                    <td id="dataReal"></td>
+                    <td id="akurasi"></td>
+                    <td>
+                        <button class="edit-button" onclick="editResult()">Edit</button>
+                        <button class="delete-button" onclick="deleteResult()">Hapus</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="chart-container">
+        <canvas id="chart"></canvas>
+    </div>
+    <script>
+        var chart;
+
+        function hitung() {
+            var tahun = document.getElementById('tahun').value;
+            var indikator = document.getElementById('indikator').value;
+            var probabilitas, kumulatif, interval1, interval2;
+
+            if (indikator === 'penurunan_ihsg' && tahun !== '2020') {
+                alert('Penurunan IHSG hanya bisa menggunakan tahun 2020.');
+                return;
+            }
+
+            switch (indikator) {
+                case 'nilai_tukar':
+                    switch (tahun) {
+                        case '2018':
+                            probabilitas = 0.223;
+                            kumulatif = 0.223;
+                            interval1 = '0';
+                            interval2 = '222';
+                            break;
+                        case '2019':
+                            probabilitas = 0.24;
+                            kumulatif = 0.463;
+                            interval1 = '223';
+                            interval2 = '462';
+                            break;
+                        case '2020':
+                            probabilitas = 0.219;
+                            kumulatif = 0.682;
+                            interval1 = '463';
+                            interval2 = '681';
+                            break;
+                    }
+                    break;
+                case 'ihsg_sebelum':
+                    switch (tahun) {
+                        case '2018':
+                            probabilitas = 0.169;
+                            kumulatif = 0.851;
+                            interval1 = '682';
+                            interval2 = '850';
+                            break;
+                        case '2019':
+                            probabilitas = 0.149;
+                            kumulatif = 1;
+                            interval1 = '851';
+                            interval2 = '999';
+                            break;
+                        case '2020':
+                            probabilitas = 0.123;
+                            kumulatif = 1.123;
+                            interval1 = '1000';
+                            interval2 = '1122';
+                            break;
+                    }
+                    break;
+                case 'penurunan_ihsg':
+                    probabilitas = 0.1;
+                    kumulatif = 0.1;
+                    interval1 = '0';
+                    interval2 = '99';
+                    break;
+                case 'tenaga_kerja':
+                    switch (tahun) {
+                        case '2018':
+                            probabilitas = 0.169;
+                            kumulatif = 0.851;
+                            interval1 = '682';
+                            interval2 = '850';
+                            break;
+                        case '2019':
+                            probabilitas = 0.149;
+                            kumulatif = 1;
+                            interval1 = '851';
+                            interval2 = '999';
+                            break;
+                        case '2020':
+                            probabilitas = 0.123;
+                            kumulatif = 1.123;
+                            interval1 = '1000';
+                            interval2 = '1122';
+                            break;
+                    }
+                    break;
+            }
+
+            document.getElementById('probabilitas').innerText = probabilitas;
+            document.getElementById('kumulatif').innerText = kumulatif;
+            document.getElementById('interval1').innerText = interval1;
+            document.getElementById('interval2').innerText = interval2;
+        }
+
+        function hitungTigaDigit() {
+            var a = parseFloat(document.getElementById('a').value);
+            var c = parseFloat(document.getElementById('c').value);
+            var m = parseFloat(document.getElementById('m').value);
+            var z0 = parseFloat(document.getElementById('z0').value);
+
+            var aZiC = (a * z0 + c);
+            var mod = aZiC % m;
+            var threeDigit = mod * 10;
+            var prediksi = threeDigit + 1000;
+
+            document.getElementById('aZiC').innerText = aZiC;
+            document.getElementById('mod').innerText = mod;
+            document.getElementById('threeDigit').innerText = threeDigit;
+            document.getElementById('prediksi').innerText = prediksi;
+        }
+
+        function updateChart() {
+            if (chart) {
+                chart.destroy();
+            }
+            var ctx = document.getElementById('chart').getContext('2d');
+            chart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Probabilitas', 'Kumulatif', 'Interval 1', 'Interval 2', '(aZi-1 + C)', '(aZi-1 + C) mod m', 'Angka tiga digit', 'Prediksi'],
+                    datasets: [{
+                        label: 'Hasil Perhitungan',
+                        data: [
+                            parseFloat(document.getElementById('probabilitas').innerText),
+                            parseFloat(document.getElementById('kumulatif').innerText),
+                            parseFloat(document.getElementById('interval1').innerText),
+                            parseFloat(document.getElementById('interval2').innerText),
+                            parseFloat(document.getElementById('aZiC').innerText),
+                            parseFloat(document.getElementById('mod').innerText),
+                            parseFloat(document.getElementById('threeDigit').innerText),
+                            parseFloat(document.getElementById('prediksi').innerText)
+                        ],
+                        backgroundColor: ['#ff6384', '#36a2eb', '#cc65fe', '#cc65fe', '#ff6384', '#36a2eb', '#cc65fe', '#ffce56'],
+                        borderColor: ['#ff6384', '#36a2eb', '#cc65fe', '#cc65fe', '#ff6384', '#36a2eb', '#cc65fe', '#ffce56'],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    scales: {
+                        x: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            // Update the result table
+            var periode = "2020"; // Example period
+            var hasilSimulasi = parseFloat(document.getElementById('prediksi').innerText);
+            var dataReal = 3000; // Example real data
+            var akurasi = ((hasilSimulasi / dataReal) * 100).toFixed(2) + "%";
+
+            document.getElementById('periode').innerText = periode;
+            document.getElementById('hasilSimulasi').innerText = hasilSimulasi;
+            document.getElementById('dataReal').innerText = dataReal;
+            document.getElementById('akurasi').innerText = akurasi;
+        }
+
+        function editResult() {
+            var periode = prompt("Edit Periode:", document.getElementById('periode').innerText);
+            var hasilSimulasi = prompt("Edit Hasil Simulasi:", document.getElementById('hasilSimulasi').innerText);
+            var dataReal = prompt("Edit Data Real:", document.getElementById('dataReal').innerText);
+
+            if (periode !== null) document.getElementById('periode').innerText = periode;
+            if (hasilSimulasi !== null) document.getElementById('hasilSimulasi').innerText = hasilSimulasi;
+            if (dataReal !== null) document.getElementById('dataReal').innerText = dataReal;
+
+            var akurasi = ((parseFloat(hasilSimulasi) / parseFloat(dataReal)) * 100).toFixed(2) + "%";
+            document.getElementById('akurasi').innerText = akurasi;
+        }
+
+        function deleteResult() {
+            if (confirm("Apakah Anda yakin ingin menghapus hasil ini?")) {
+                document.getElementById('periode').innerText = "";
+                document.getElementById('hasilSimulasi').innerText = "";
+                document.getElementById('dataReal').innerText = "";
+                document.getElementById('akurasi').innerText = "";
+            }
+        }
+    </script>
+</body>
+</html>
